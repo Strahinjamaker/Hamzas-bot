@@ -1,3 +1,4 @@
+
 import discord
 from discord.ext import commands
 from discord import app_commands
@@ -18,19 +19,19 @@ import re
 BOT_TOKEN = ""
 
 # Role IDs
-MIDDLEMAN_ROLE_ID = 1485859608034545684
-HITTER_ROLE_ID = 1485833336076107907
-VOUCHSET_ROLE_ID = 1485833289477390456
-PROTECTED_ROLES = [1485833337049452544, 1485833336076107907]
+MIDDLEMAN_ROLE_ID = 1497293385885683833
+HITTER_ROLE_ID = 1497293417456209992
+VOUCHSET_ROLE_ID = 1497293489682255912
+PROTECTED_ROLES = [1497293514231251044,1485833336076107907]
 
 # Admin IDs who can use special commands
-ADMIN_IDS = [1469165489958817978, 1057806013639704676, 610552456346337302,372166322512986114,]
+ADMIN_IDS = [1135999619541774386, 1057806013639704676, 610552456346337302,372166322512986114,]
 
 # ID of the category where tickets will be created
-TICKET_CATEGORY_ID = 1487845565873262613
+TICKET_CATEGORY_ID = 1496233789993648158
 
 # ID of the channel where transcripts will be sent
-TRANSCRIPT_CHANNEL_ID = 1486144810539810998
+TRANSCRIPT_CHANNEL_ID = 1496233789993648160
 
 
 # ==================== EMBED COLORS CONFIGURATION ====================
@@ -3952,16 +3953,10 @@ async def on_ready():
     bot.add_view(FeeView())
     bot.add_view(HittingView())
 
-    # Add new persistent views (none needed for the added features except maybe MassDM which is ephemeral)
+token = os.getenv("TOKEN")
 
-    # Take anti‑nuke snapshot for every guild
-    for guild in bot.guilds:
-        await _an_snapshot_guild(guild)
-    print(f"[AntiNuke] Snapshots taken for {len(bot.guilds)} guild(s).")
+if not token:
+    raise ValueError("TOKEN environment variable not set")
 
-    try:
-        synced = await bot.tree.sync()
-        print(f"✅ Synced {len(synced)} slash commands")
-    except Exception as e:
-        print(f"❌ Failed to sync commands: {e}")
+bot.run(token)
 
