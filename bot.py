@@ -3,7 +3,10 @@ from discord.ext import commands
 import random
 import os
 
+# 🔥 INTENTS (OBAVEZNO)
 intents = discord.Intents.default()
+intents.message_content = True
+
 bot = commands.Bot(command_prefix="!", intents=intents)
 
 balances = {}
@@ -23,6 +26,11 @@ def casino_embed(title, description):
 @bot.event
 async def on_ready():
     print(f"Casino Bot is online as {bot.user}")
+
+# 🧪 TEST
+@bot.command()
+async def ping(ctx):
+    await ctx.send("pong")
 
 # 💰 BALANCE
 @bot.command()
@@ -45,6 +53,10 @@ async def coinflip(ctx, amount: int, choice: str):
 
     if amount > bal:
         await ctx.send(embed=casino_embed("❌ Error", "Not enough coins"))
+        return
+
+    if choice.lower() not in ["heads", "tails"]:
+        await ctx.send(embed=casino_embed("❌ Error", "Choose heads or tails"))
         return
 
     result = random.choice(["heads", "tails"])
@@ -96,4 +108,5 @@ async def slots(ctx, amount: int):
 
     await ctx.send(embed=embed)
 
+# 🔐 TOKEN IZ RAILWAY
 bot.run(os.getenv("TOKEN"))
